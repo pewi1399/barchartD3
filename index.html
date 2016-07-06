@@ -36,6 +36,8 @@ body {
 <!--<script src="https://d3js.org/d3.v4.min.js"></script>-->
 <script type="text/javascript">
 
+
+// --------------------------- start definitions --------------------------
 var margin = {top: 20, right: 100, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -62,152 +64,12 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("data.csv", function(error, data) {
-  if (error) throw error;
-
-  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Fraga"; }));
-
-
-// create sub array holding widths
-  data.forEach(function(d) {
-    var y0 = 0;
-    d.ages = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
-    d.ages.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
-  });
-
-  //data.sort(function(a, b) { return b.ages[0].y1 - a.ages[0].y1; });
-
-  // vilken domän har y axeln?
-  //Ordinal
-  //argumentet anger värden och ordning
-  y.domain(data.map(function(d) { return d.Fraga; }).sort());
-
-  svg.append("g")
-      .attr("class", "y axis")
-      //.attr("transform", "translate(0," + height + ")")
-      .call(yAxis);
-
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-// var state = svg.selectAll(".state")
-//     .data(data)
-//    .enter().append("g")
-//    .attr("class", "state");
-//    //.attr("transform", function(d) { return "translate( 0," + x(d.Fraga/1000) +" )"; });
-//
-//var states = state.selectAll("rect")
-//      .data(function(d) { return d.ages; })
-//    	.enter()
-//      .append("rect")
-//      .attr("width", y.step()-2)
-//      .attr("y",  function(d) { return y(d.Fraga);})
-//      .attr("x", 0)
-//      .attr("width", 10)//function(d) { return x(d.y0/1000) - x(d.y1/1000); })
-//      .attr("height", 10)
-//      .style("fill", function(d) { return color(d.name); });
-
-
-//place nodes on y axis using top element in array
-var containers = svg.selectAll(".container")
-      .data(data)
-      .enter().append("g")
-  .attr("class", "container")
-  .attr("transform", function(d) { return "translate( 0," + y(d.Fraga) +" )"; });
-  
-//place filter data and set width using child array 
-var zzz = containers.selectAll("zzz")
-  .data(function(d) { return d.ages; })
-  //.data(data)
-	.enter()
-  .append("rect")
-  .attr("class", "zzz")
-  .attr("width",function(d){return x(d.y1) - x(d.y0);}) //set width of each piece here
-  .attr("height", y.step())
-  .attr("x", function(d){return x(d.y0);}) // set starting point of each piece along x.axis
-  .attr("stroke", "white")
-  .style("fill", function(d){
-    if(d.name == "Yes"){
-      return "dodgerblue";
-    } else {
-      return "grey";
-    }})
-    
-// rects cannot hold a text element
-// bind labels to text nodes instead
-var texts = containers.selectAll("barlabels")
-  .data(function(d){return d.ages;})
-  .enter()
-  .append("text")
-  .attr("x", function(d){ 
-    if(x(d.y0) == 0){
-      return x(0.025);
-      
-    } else if(d.y0 ==1){
-      return 2000;  //hack, tidy this up
-      
-    } else {
-      return x(0.975);
-      
-    }
-    })
-  .attr("y", y.step()/2)
-  .text("filler")
-  .attr("text-anchor","middle")
-    
-//var texts = containers.selectAll(".labels")
-  //.data(function(d) { return d.ages; })
-  //.enter()
-  //.append("g")
-  //.attr("class", "labels")
-  //
-//texts
-//  .attr("x", 0.5)
-//  .text("GG")
-//  .attr("font-family", "sans-serif")
-//  .attr("font-size", "20px")
-//  .attr("fill", "red");
-
-//var text = svg.selectAll("text")
-     //.data(circleData)
-     //.enter()
-//     .append("text");
-
-  
-//svg.selectAll(".tmp")
-//  .append("g")
-//  .attr("x", 10)
-//  .attr("y", 20)
-//  .attr("class","tmp")
-//  .text("X")
-//  .attr("font-family", "sans-serif")
-//  .attr("font-size", "20px")
-//  .attr("fill", "red");
-  
-//    state.selectAll("rect")
-//      .data(function(d) { return d.ages; })
-//    .enter().append("rect")
-//      .attr("width", y.step()-2)
-//      .attr("x", function(d) { return x(d.y1); })
-//      .attr("height", function(d) { return x(d.y0) - x(d.y1); })
-//      .style("fill", function(d) { return color(d.name); });
-
-//  var legend = svg.select(".state:last-child").selectAll(".legend")
-//      .data(function(d) { return d.ages; })
-//    .enter().append("g")
-//      .attr("class", "legend")
-//      .attr("transform", function(d) { return "translate(" + (y.step()-2) / 2 + "," + y((d.y0 + d.y1) / 2) + ")"; });
-//
-//  legend.append("line")
-//      .attr("x2", 10);
-//
-//  legend.append("text")
-//      .attr("x", 13)
-//      .attr("dy", ".35em")
-//      .text(function(d) { return d.name; });
-
-});
-
+// ---------------------------- end definitions ---------------------------
 </script>
+<script src="drawChart.js"></script>
+<script src="redrawChart.js"></script>
+
+<script  type="text/javascript">
+	setInterval(redraw, 5000);
+</script>
+
