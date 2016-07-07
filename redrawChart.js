@@ -52,15 +52,25 @@ d3.selectAll(".barlabels")
       }})
   .attr("y", y.step()/2)
   .attr("opacity", function(d){
-	if(d.y0 == 0 & d.y1 == 0 || d.y0 == 1 & d.y1 == 1){
+	if(d.y0 === 0 & d.y1 === 0 || d.y0 == 1 & d.y1 == 1){
 	return 0;
 	}else{
 	return 1;
 	}
 	})
 	.transition()
- 	.duration(2000)
-  	.text(function(d){return d.name + " " + Math.round((d.y1 -d.y0)*100) + "%";})
+  .duration(3000)
+        .tween("text", function(d) {
+            var that = d3.select(this),
+                i = d3.interpolateString(that.text(), Math.round((d.y1 -d.y0)*100)),
+                prec = (Math.round((d.y1 -d.y0)*100) + "").split("."),
+                round = (prec.length > 1) ? Math.pow(10, prec[1].length) : 1;
+
+            return function(t) {
+                //this.textContent = Math.round(i(t) * round) / round + 10;
+                that.text(Math.round(i(t) * round) / round + "%");
+            };
+        })
   .attr("text-anchor", function(d){ 
     if(d.name == "Yes"){
       return "start";

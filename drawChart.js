@@ -71,7 +71,7 @@ var texts = containers.selectAll(".barlabels")
 	return 1;
 	}
 	})
-  .text(function(d){return d.name + " " + Math.round((d.y1 -d.y0)*100) + "%";})
+  .text(function(d){return Math.round((d.y1 -d.y0)*100) + "%";})
   .attr("text-anchor", function(d){ 
     if(d.name == "Yes"){
       return "start";
